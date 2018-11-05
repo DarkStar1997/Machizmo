@@ -14,3 +14,4 @@ macro(add_code name)
 endmacro()
 
 add_code(test1)
+add_code(test2)
