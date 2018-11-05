@@ -1,2 +1,2 @@
-# The Machizmo
+# Machizmo
 Cool stuff
