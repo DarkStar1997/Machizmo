@@ -1,4 +1,4 @@
 build
-CMakeLists.txt
+# CMakeLists.txt
 */*.dat
 .vscode
