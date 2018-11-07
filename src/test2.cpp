@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <chrono>
 #include <string>
+#include <dummy.hpp>
 
 Display* dpy=XOpenDisplay(0);
 int scr=XDefaultScreen(dpy);
@@ -44,7 +45,7 @@ int main(int argc, char** argv) try
     XFlush(dpy);
     usleep(50);
 
-    cv::VideoCapture cap("/dev/video1");
+    cv::VideoCapture cap("/dev/video0");
     cv::Mat tmp;
     while(true)
     {

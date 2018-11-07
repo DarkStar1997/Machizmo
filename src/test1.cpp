@@ -11,6 +11,7 @@
 #include <math.h>
 #include <chrono>
 #include <sstream>
+#include <dummy.hpp>
 
 Display* dpy=XOpenDisplay(0);
 int scr=XDefaultScreen(dpy);
