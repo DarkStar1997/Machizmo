@@ -24,6 +24,22 @@ struct Mouse
         XFlush(dpy);
         usleep(delay);
     }
+    void rightClick()
+    {
+        XTestFakeButtonEvent(dpy, 3, True, 0);
+        XFlush(dpy);
+        XTestFakeButtonEvent(dpy, 3, False, 0);
+        XFlush(dpy);
+        usleep(delay);
+    }
+    void leftClick()
+    {
+        XTestFakeButtonEvent(dpy, 2, True, 0);
+        XFlush(dpy);
+        XTestFakeButtonEvent(dpy, 2, False, 0);
+        XFlush(dpy);
+        usleep(delay);
+    }
     void setScalingFunction(void (*ptr)(double&, double&))
     {
         ScalingFunction = ptr;
