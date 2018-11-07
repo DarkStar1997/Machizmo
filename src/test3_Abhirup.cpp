@@ -1,11 +1,11 @@
 #include <NeuralNetworkSettings.hpp>
+#include <MouseSettings.hpp>
+#include <Utilities.hpp>
 #include <iostream>
 #include <dlib/opencv.h>
 #include <opencv2/opencv.hpp>
 #include <chrono>
 #include <string>
-#include <MouseSettings.hpp>
-
 Mouse mouse;
 
 void function(double &x, double &y)
