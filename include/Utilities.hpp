@@ -1,3 +1,10 @@
+#include <NeuralNetworkSettings.hpp>
+#include <iostream>
+#include <dlib/opencv.h>
+#include <opencv2/opencv.hpp>
+#include <chrono>
+#include <string>
+#include <MouseSettings.hpp>
 #include <opencv2/core.hpp>
 
 auto WHITE_COLOR = cv::Scalar(255, 255, 255),
@@ -19,3 +26,5 @@ std::pair<int,int>
 	NOSE = std::make_pair(27,35),
 	JAW = std::make_pair(0,17)
 ;
+
+bool SCROLL_MODE=false, CLICK_MODE=false;

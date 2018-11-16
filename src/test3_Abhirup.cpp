@@ -1,12 +1,8 @@
-#include <NeuralNetworkSettings.hpp>
-#include <MouseSettings.hpp>
 #include <Utilities.hpp>
-#include <iostream>
-#include <dlib/opencv.h>
-#include <opencv2/opencv.hpp>
-#include <chrono>
-#include <string>
 Mouse mouse;
+
+SCROLL_MODE = false;
+CLICK_MODE = false; 
 
 void function(double &x, double &y)
 {
@@ -24,7 +20,7 @@ int main(int argc, char** argv)
 
     mouse.moveTo(cur_x, cur_y);
 
-    cv::VideoCapture cap("/dev/video0");
+    cv::VideoCapture cap("/dev/video1");
     cv::Mat tmp;
     while(true)
     {
