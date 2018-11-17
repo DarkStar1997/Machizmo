@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(Dlib_tests)
 set(cmake_cxx_flags "-std=c++14 -O3 -march=native")
-include(/home/rohan/Downloads/Compressed/dlib-19.16/dlib/cmake)
+include(/opt/dlib-19.16/dlib/cmake)
 
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/include)

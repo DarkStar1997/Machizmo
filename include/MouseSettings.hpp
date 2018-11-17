@@ -9,12 +9,24 @@ Window root_window=XRootWindow(dpy, scr);
 struct Mouse
 {
     int max_x, max_y, delay;
+    int prev_x, prev_y;
+
     void (*ScalingFunction)(double&, double&);
     Mouse()
     {
         max_y = DisplayHeight(dpy, scr);
         max_x = DisplayWidth(dpy, scr);
         delay = 50;
+    }
+    std::pair<int,int> currPos()
+    {
+        int win_x, win_y, root_x, root_y = 0;
+	    unsigned int mask = 0;
+        Window child_win, root_win;
+        XQueryPointer(dpy, root_window, &child_win, &root_win, &root_x, &root_y, &win_x, &win_y, &mask);
+        prev_x = win_x; 
+        prev_y = win_y;
+        return {win_x, win_y};
     }
     void moveTo(double x, double y, bool ctrl = false)
     {
@@ -37,6 +49,22 @@ struct Mouse
         XTestFakeButtonEvent(dpy, 2, True, 0);
         XFlush(dpy);
         XTestFakeButtonEvent(dpy, 2, False, 0);
+        XFlush(dpy);
+        usleep(delay);
+    }
+    void scrollUp()
+    {
+        XTestFakeButtonEvent(dpy, 4, True, 0);
+        XFlush(dpy);
+        XTestFakeButtonEvent(dpy, 4, False, 0);
+        XFlush(dpy);
+        usleep(delay);
+    }
+    void scrollDown()
+    {
+        XTestFakeButtonEvent(dpy, 5, True, 0);
+        XFlush(dpy);
+        XTestFakeButtonEvent(dpy, 5, False, 0);
         XFlush(dpy);
         usleep(delay);
     }
