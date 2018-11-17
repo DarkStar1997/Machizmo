@@ -25,7 +25,7 @@ struct Mouse
         Window child_win, root_win;
         XQueryPointer(dpy, root_window, &child_win, &root_win, &root_x, &root_y, &win_x, &win_y, &mask);
         prev_x = win_x; 
-        prev_y = win_y;cd 
+        prev_y = win_y;
         return {win_x, win_y};
     }
     void moveTo(double x, double y, bool ctrl = false)
