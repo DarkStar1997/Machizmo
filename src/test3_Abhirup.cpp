@@ -9,7 +9,8 @@ void function(double &x, double &y)
 
 int main(int argc, char** argv)
 {
-    SCROLL_MODE = false; CLICK_MODE = false;
+    Utils util;
+    util.SCROLL_MODE = false; util.CLICK_MODE = false;
     mouse.setScalingFunction(function);
     net_type net;
     dlib::deserialize("mmod_human_face_detector.dat") >> net;  
