@@ -79,16 +79,17 @@ struct Utils
 	void scrollAux(dlib::full_object_detection &shape)
 	{
 		double mar = MAR(shape);
-		std::cout << mar << "\n";
+		// std::cout << mar << "\n";
 		if(mar > 0.27)
 		{
 			SCROLL_MODE = true;
-			std::cout << "scroll ON\n";
+			CLICK_MODE = false;
+			// std::cout << "scroll ON\n";
 		}	
 		else
 		{
 			SCROLL_MODE = false;
-			std::cout << "scroll OFF\n";
+			// std::cout << "scroll OFF\n";
 		}
 	}
 };
@@ -126,7 +127,7 @@ struct Video
 	
 	void add_scroll_overlay(cv::Mat &tmp, dlib::full_object_detection &shape, int t = 1)
 	{
-		std::string msg = "scroll " + std::string(true? "ON" : "OFF");
+		std::string msg = "scroll " + std::string(t==1? "ON" : "OFF");
 		cv::putText(tmp, msg, cv::Point(30,30), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, util.RED_COLOR, 1, CV_AA);
 	} 
 };
