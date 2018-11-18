@@ -10,6 +10,7 @@
 #include <MouseSettings.hpp>
 #include <opencv2/core.hpp>
 #include <MyTimer.h>
+#include <sstream>
 
 #define cvPoint()
 struct Utils
