@@ -40,8 +40,8 @@ double EAR_twist(std::vector<std::vector<int>> &points, dlib::full_object_detect
 
 int main()
 {
-	cv::VideoCapture cap;
-	cap.open("/dev/video1");
+    	cv::VideoCapture cap(2);
+        //cap.open("/dev/video1");
 	if(!cap.isOpened())
 	{
 		std::cout<<"Unable to open camera\n";
@@ -76,11 +76,13 @@ int main()
 	std::vector<std::vector<int>> right_eye = {{36}, {37, 41}, {38, 40}, {39}};
 	std::vector<std::vector<int>> left_eye = {{42}, {43, 47}, {44, 46}, {45}};
 
+        cv::namedWindow("Machizmo", CV_GUI_NORMAL);
+
 	cv::Mat temp;
 	while(1)
 	{
 		cap >> temp;
-		cv::resize(temp, temp, cv::Size(300, 300));
+                cv::resize(temp, temp, cv::Size(300, 300));
 		//cv::cvtColor(temp, temp, CV_BGR2GRAY);
 		auto start = std::chrono::high_resolution_clock::now();
 		dlib::cv_image<dlib::bgr_pixel> cimg(temp);
@@ -115,11 +117,11 @@ int main()
 								blink_count.first++;
 								blinked = true;
 								halt_blink = 1;
-//								XTestFakeButtonEvent(dpy, 3, True, 0);
-//								XFlush(dpy);
-//								XTestFakeButtonEvent(dpy, 3, False, 0);
-//								XFlush(dpy);
-//								usleep(50);
+								XTestFakeButtonEvent(dpy, 3, True, 0);
+								XFlush(dpy);
+								XTestFakeButtonEvent(dpy, 3, False, 0);
+								XFlush(dpy);
+								usleep(50);
 							}
 							else
 							{
@@ -127,11 +129,11 @@ int main()
 								blink_count.second++;
 								blinked = true;
 								halt_blink = 1;
-//								XTestFakeButtonEvent(dpy, 2, True, 0);
-//								XFlush(dpy);
-//								XTestFakeButtonEvent(dpy, 2, False, 0);
-//								XFlush(dpy);
-//								usleep(50);
+								XTestFakeButtonEvent(dpy, 2, True, 0);
+								XFlush(dpy);
+								XTestFakeButtonEvent(dpy, 2, False, 0);
+								XFlush(dpy);
+								usleep(50);
 							}
 						}
 					}
@@ -152,7 +154,20 @@ int main()
 			x /= points.size(); y /= points.size();
 			x = max_x / 2 - x;
 
-			for(const auto& i: points)
+
+            //printing mouth
+
+            for(int olips = 48; olips <= 59; olips++)
+            {
+                cv::circle(temp, cv::Point(shape.part(olips).x(), shape.part(olips).y()), 2, cv::Scalar(240, 236, 12), -1);
+                //cv::putText(temp, std::to_string(olips), cv::Point(shape.part(olips).x(), shape.part(olips).y()), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 256), 1.0);
+            }
+
+            int opening = (shape.part(51).y() - shape.part(57).y()) + (shape.part(50).y() - shape.part(58).y()) + (shape.part(52).y() - shape.part(56).y());
+
+            std::cout << " Opening = " << opening << '\n';
+
+            for(const auto& i: points)
 				cv::circle(temp, cv::Point(shape.part(i).x(), shape.part(i).y()), 2, cv::Scalar(0, 0, 255), -1);
 
 			for(const auto& i: right_eye)
@@ -176,6 +191,28 @@ int main()
 					XWarpPointer(dpy, 0L, root_window, 0, 0, 0, 0, x*(max_x/190.0) - max_x*3.8, y*(max_y/107.0)-max_y*1.4);
 					XFlush(dpy);
 					usleep(50);
+                    if(fabs(opening) > 100)
+                    {
+                        const double x_pos = x*(max_x/190.0) - max_x*3.8;
+                        const double y_pos = y*(max_y/107.0)-max_y*1.4;
+
+                        if(y_pos >= max_y / 2.0)
+                        {
+                            XTestFakeButtonEvent(dpy, 5, True, 0);
+                            XFlush(dpy);
+							XTestFakeButtonEvent(dpy, 5, False, 0);
+                            XFlush(dpy);
+                            usleep(50);
+                        }
+                        else
+                        {
+                            XTestFakeButtonEvent(dpy, 4, True, 0);
+                            XFlush(dpy);
+							XTestFakeButtonEvent(dpy, 4, False, 0);
+                            XFlush(dpy);
+                            usleep(50);
+                        }
+                    }
 				}
 				old_x = x; old_y = y;
 			}
@@ -191,6 +228,7 @@ int main()
 		}
 		auto end = std::chrono::high_resolution_clock::now();
 		std::chrono::duration<double> diff = end - start;
+        	cv::flip(temp, temp, 1);
 		std::stringstream text;
 		text << "FPS: "<<std::setprecision(3)<<std::fixed<<(1/diff.count());
 		//std::cout<<"FPS: "<<1/diff.count()<<'\n';
@@ -204,7 +242,7 @@ int main()
 		text << "Left Blinks: " << blink_count.second;
 		cv::putText(temp, text.str(), cv::Point(150, 35), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 256), 2.0);
 
-		cv::imshow("Demo", temp);
+        	cv::imshow("Machizmo", temp);
 		cv::waitKey(1);
 	}
 }
